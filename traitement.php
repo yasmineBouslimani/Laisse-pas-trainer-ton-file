@@ -1,7 +1,7 @@
 <?php
 // définition des constantes
     $uploadDir = "images/";
-    $legalExtensions = array("JPG", "PNG", "GIF");
+    $legalExtensions = ["jpg", "png", "gif"];
     $legalSize = 1000000; // 1 000 000 Octets = 1 MO
 
 if (isset($_POST['submit'])) {
@@ -11,11 +11,12 @@ if (isset($_POST['submit'])) {
             $extension = pathinfo($_FILES['fichier']['name'][$i], PATHINFO_EXTENSION);
             $newName = $_FILES['fichier']['name'][$i];
             $destination = "images/" . uniqid("image") . "." . $extension;
-                if ($actualSize < $legalSize) {
+            if (in_array($extension, $legalExtensions) && $actualSize < $legalSize) {
                     move_uploaded_file($actualName, $destination); //Upload
-                }
+            }
         }
 }
+
 $images = new FilesystemIterator($uploadDir);
 if (!empty($_POST['delete'])) {
     unlink($_POST['delete']);
